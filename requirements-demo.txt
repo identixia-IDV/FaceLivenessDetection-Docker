@@ -1,0 +1,5 @@
+# Local Gradio test UI only (API must already be running via python3 run_server.py first).
+-r requirements.txt
+requests>=2.31.0
+gradio>=4.0
+opencv-python-headless>=4.8

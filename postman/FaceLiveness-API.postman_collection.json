@@ -1,0 +1,193 @@
+{
+  "info": {
+    "_postman_id": "identixia-faceliveness-api-0001",
+    "name": "Identixia Face Liveness API",
+    "description": "Identixia Face Liveness API.\nbaseUrl: http://127.0.0.1:14105\nWindows and Docker share this API. Flow: Health \u2192 Activate \u2192 `/api/face/liveness` (PAD+deepfake) \u00b7 `deepfake`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:14105"
+    },
+    {
+      "key": "licenseKey",
+      "value": ""
+    },
+    {
+      "key": "imageB64",
+      "value": ""
+    },
+    {
+      "key": "image2B64",
+      "value": ""
+    },
+    {
+      "key": "feature1",
+      "value": ""
+    },
+    {
+      "key": "feature2",
+      "value": ""
+    },
+    {
+      "key": "personId",
+      "value": "demo-1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Control",
+      "item": [
+        {
+          "name": "GET /api/health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health",
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /api/backend",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/backend",
+            "description": ""
+          }
+        },
+        {
+          "name": "GET /api/machinecode",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/machinecode",
+            "description": "Send data.machinecode to Identixia for a license key."
+          }
+        },
+        {
+          "name": "GET /api/licenseStatus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/licenseStatus",
+            "description": ""
+          }
+        },
+        {
+          "name": "POST /api/activate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/activate",
+            "description": "Writes LICENSE= into the server .env.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"license\": \"{{licenseKey}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Face",
+      "item": [
+        {
+          "name": "POST /api/face/liveness (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/face/liveness",
+            "description": "PAD + deepfake (`FaceSDK_liveness_all`). Response faces include `liveness2d` and `deepfake` when licensed. Authenticity is REAL only when both say real. JSON body; image fields are base64. Same path also accepts form-data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"{{imageB64}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "POST /api/face/liveness (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/face/liveness",
+            "description": "PAD + deepfake (`FaceSDK_liveness_all`). Response faces include `liveness2d` and `deepfake` when licensed. Authenticity is REAL only when both say real. JSON body; image fields are base64. Same path also accepts form-data. multipart/form-data; upload files under the same field names as JSON.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /api/face/deepfake (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/face/deepfake",
+            "description": "Deepfake-only score. For combined PAD + deepfake authenticity use `/api/face/liveness`. JSON body; image fields are base64. Same path also accepts form-data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"{{imageB64}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "POST /api/face/deepfake (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/face/deepfake",
+            "description": "Deepfake-only score. For combined PAD + deepfake authenticity use `/api/face/liveness`. JSON body; image fields are base64. Same path also accepts form-data. multipart/form-data; upload files under the same field names as JSON.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

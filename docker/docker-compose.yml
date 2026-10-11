@@ -1,0 +1,21 @@
+services:
+  sdk:
+    container_name: identixia-face-liveness
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: identixia/face-liveness:local
+    platform: linux/amd64
+    privileged: true
+    shm_size: "1gb"
+    ports:
+      - "${PORT:-14105}:${PORT:-14105}"
+    # PORT/HOST/LICENSE come from ../.env (env_file).
+    env_file:
+      - ../.env
+    volumes:
+      - ../.env:/root/facesdk/.env
+      # Linux hosts: keep this for a stable Docker machine code.
+      # Docker Desktop (macOS/Windows): remove the next line (no host /etc/machine-id).
+      - /etc/machine-id:/etc/machine-id:ro
+    restart: unless-stopped
